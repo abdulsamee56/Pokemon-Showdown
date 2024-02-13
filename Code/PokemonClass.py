@@ -188,11 +188,11 @@ def damagecalc(pkmLevel,movePower,pkmAttack,pkmDefense,pkmspeAttack,pkmspeDefens
         'Null' : {}
     }
     #Checks Second Type
-    if deftype1 in type_effectiveness and attackType in type_effectiveness[deftype1]:
-        TYPE1 = type_effectiveness[deftype1][attackType]
+    if deftype1 in type_effectiveness and moveType in type_effectiveness[deftype1]:
+        TYPE1 = type_effectiveness[deftype1][moveType]
     #Checks first Type
-    if deftype2 in type_effectiveness and attackType in type_effectiveness[deftype2]:
-        TYPE2 = type_effectiveness[deftype2][attackType]
+    if deftype2 in type_effectiveness and moveType in type_effectiveness[deftype2]:
+        TYPE2 = type_effectiveness[deftype2][moveType]
 
     if pkmType == moveType:
         STAB = 1.5
@@ -209,3 +209,4 @@ def damagecalc(pkmLevel,movePower,pkmAttack,pkmDefense,pkmspeAttack,pkmspeDefens
         damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmAttack/pkmDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
     elif attackType == "Special":
         damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmspeAttack/pkmspeDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
+    return damageDone
