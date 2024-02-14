@@ -1,5 +1,8 @@
 import random
+
+# Define a class for Pokémon characters
 class Pokemon:
+    # Initialize a new Pokémon with its basic attributes and an optional moveset
     def __init__(self, name, type1, type2, hp, attack, defense, specialAttack, specialDefense, speed, level, moveset=None):
         self.name = name
         self.type1 = type1
@@ -11,12 +14,15 @@ class Pokemon:
         self.specialDefense = specialDefense
         self.speed = speed
         self.level = level
+        # If no moveset is provided, initialize with an empty list
         if moveset is None:
             self.moveset = []
         else:
             self.moveset = moveset
+        # Calculate battle HP, currently unused in this implementation
         battleHP = hp + level + 10
 
+    # Display basic information about the Pokémon
     def display_info(self):
         print(f"Name: {self.name}")
         print(f"Type 1: {self.type1}")
@@ -24,18 +30,24 @@ class Pokemon:
         print(f"HP: {self.hp}")
         print(f"Attack: {self.attack}")
         print(f"Defense: {self.defense}")
+        print(f"Special Attack: {self.specialAttack}")
+        print(f"Special Defense: {self.specialDefense}")
         print(f"Speed: {self.speed}")
         print(f"Level: {self.level}")
+
+# Define a class for moves that Pokémon can perform
 class Move:
+    # Initialize a new move with its attributes
     def __init__(self, name, move_type, attacktype, power, accuracy, pp):
         self.name = name
         self.move_type = move_type
+        self.attacktype = attacktype  # Specifies if the move is Physical or Special
         self.power = power
         self.accuracy = accuracy
-        self.pp = pp
-        self.attacktype = attacktype
+        self.pp = pp  # Power Points determine how many times a move can be used
 
-body_slam = Move("Body Slam", "Normal", "Physical",85, 100, 15)
+# Current moves
+body_slam = Move("Body Slam", "Normal", "Physical", 85, 100, 15)
 earthquake = Move("Earthquake", "Ground", "Physical",100, 100, 10)
 scald = Move("Scald", "Water", "Special", 80, 100, 15)
 psychic_move = Move("Psychic", "Psychic", "Special", 90, 100, 10)
@@ -165,7 +177,13 @@ gengar = Pokemon("Gengar", "Ghost", "Poison", 60, 65, 60, 130, 75, 110, 50, geng
 scizor_moves = [bullet_punch, body_slam, superpower, X_Scissor]
 scizor = Pokemon("Scizor", "Bug", "Steel", 70, 130, 100, 55, 80, 65, 50, scizor_moves)
 
+# Function to calculate damage dealt from one Pokémon to another using a specific move
 def damagecalc(attackingPokemon,defendingPokemon,Move):
+
+    # Calculate various factors influencing damage
+    # Includes Pokémon's level, move's power, attacker's attack vs. defender's defense, etc.
+    # Type effectiveness and STAB (Same Type Attack Bonus) are also considered
+
     pkmLevel = attackingPokemon.level
     movePower = Move.power
     pkmAttack = attackingPokemon.attack
@@ -229,6 +247,7 @@ def damagecalc(attackingPokemon,defendingPokemon,Move):
         else:
             critical = 1
 
+        #Checks whether attack is physical or special
         if attackType == "Physical":
             damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmAttack/pkmDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
         elif attackType == "Special":
@@ -236,6 +255,13 @@ def damagecalc(attackingPokemon,defendingPokemon,Move):
         return int(damageDone)
     else:
         return 0
-
+    
+# Example damage calculations
 print(damagecalc(scizor,gengar,bullet_punch))
 print(damagecalc(drapion,snorlax,poison_jab))
+print(damagecalc(swampert, gengar, hydro_pump))
+print(damagecalc(magnezone, snorlax, thunderbolt))
+print(damagecalc(scizor, drapion, bullet_punch))
+print(damagecalc(gengar, magnezone, thunderbolt))
+print(damagecalc(drapion, swampert, poison_jab))
+print(damagecalc(snorlax, scizor, body_slam))
