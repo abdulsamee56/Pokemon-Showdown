@@ -36,7 +36,7 @@ class Move:
 body_slam = Move("Body Slam", "Normal", "Physical",85, 100, 15)
 earthquake = Move("Earthquake", "Ground", "Physical",100, 100, 10)
 scald = Move("Scald", "Water", "Special", 80, 100, 15)
-psychic_move = Move("Psychic", "Psychic", 90, 100, 10)
+psychic_move = Move("Psychic", "Psychic", "Special", 90, 100, 10)
 ice_beam = Move("Ice Beam", "Ice", "Special", 90, 100, 10)
 waterfall = Move("Waterfall", "Water", "Physical", 80, 100, 15)
 ice_punch = Move("Ice Punch", "Ice", "Physical", 75, 100, 15)
@@ -63,7 +63,7 @@ meteor_mash = Move("Meteor Mash", "Steel", "Physical", 90, 90, 10)
 zen_headbutt = Move("Zen Headbutt", "Psychic", "Physical", 80, 90, 15)
 bullet_punch = Move("Bullet Punch", "Steel", "Physical", 40, 100, 30)
 fire_punch = Move("Fire Punch", "Fire", "Physical", 75, 100, 15)
-aura_sphere = Move("Aura Sphere", "Fighting", "Special", 80, 0, 20)
+aura_sphere = Move("Aura Sphere", "Fighting", "Special", 80, 100, 20)
 extreme_speed = Move("Extreme Speed", "Normal", "Physical", 80, 100, 5)
 hydro_pump = Move("Hydro Pump", "Water", "Special", 110, 80, 5)
 air_slash = Move("Air Slash", "Flying", "Special", 75, 95, 15)
@@ -163,50 +163,68 @@ gengar = Pokemon("Gengar", ["Ghost", "Poison"], 60, 65, 60, 130, 75, 110, 50, ge
 scizor_moves = [bullet_punch, body_slam, superpower, X_Scissor]
 scizor = Pokemon("Scizor", ["Bug", "Steel"], 70, 130, 100, 55, 80, 65, 50, scizor_moves)
 
-def damagecalc(pkmLevel,movePower,pkmAttack,pkmDefense,pkmspeAttack,pkmspeDefense,attackType,pkmType,moveType,deftype1,deftype2):
-    TYPE1 = 1
-    TYPE2 = 1
-    type_effectiveness = {
-        'Normal': {'Fighting': 2, 'Ghost': 0},
-        'Fire': {'Fire': 0.5, 'Water': 0.5, 'Grass': 2, 'Ice': 2, 'Bug': 2, 'Rock': 0.5, 'Dragon': 0.5, 'Steel': 2},
-        'Water': {'Fire': 2, 'Water': 0.5, 'Grass': 0.5, 'Ground': 2, 'Rock': 2, 'Dragon': 0.5},
-        'Electric': {'Water': 2, 'Electric': 0.5, 'Grass': 0.5, 'Ground': 0, 'Flying': 2, 'Dragon': 0.5},
-        'Grass': {'Fire': 0.5, 'Water': 2, 'Grass': 0.5, 'Poison': 0.5, 'Ground': 2, 'Flying': 0.5, 'Bug': 0.5, 'Rock': 2, 'Dragon': 0.5, 'Steel': 0.5},
-        'Ice': {'Fire': 0.5, 'Water': 0.5, 'Grass': 2, 'Ice': 0.5, 'Ground': 2, 'Flying': 2, 'Dragon': 2, 'Steel': 0.5},
-        'Fighting': {'Normal': 2, 'Ice': 2, 'Poison': 0.5, 'Flying': 0.5, 'Psychic': 0.5, 'Bug': 0.5, 'Rock': 2, 'Ghost': 0, 'Dark': 2, 'Steel': 2, 'Fairy': 0.5},
-        'Poison': {'Grass': 2, 'Poison': 0.5, 'Ground': 0.5, 'Rock': 0.5, 'Ghost': 0.5, 'Steel': 0, 'Fairy': 2},
-        'Ground': {'Fire': 2, 'Electric': 2, 'Grass': 0.5, 'Poison': 2, 'Flying': 0, 'Bug': 0.5, 'Rock': 2, 'Steel': 2},
-        'Flying': {'Electric': 0.5, 'Grass': 2, 'Fighting': 2, 'Bug': 2, 'Rock': 0.5, 'Steel': 0.5},
-        'Psychic': {'Fighting': 2, 'Poison': 2, 'Psychic': 0.5, 'Dark': 0, 'Steel': 0.5},
-        'Bug': {'Fire': 0.5, 'Grass': 2, 'Fighting': 0.5, 'Poison': 0.5, 'Flying': 0.5, 'Psychic': 2, 'Ghost': 0.5, 'Dark': 2, 'Steel': 0.5, 'Fairy': 0.5},
-        'Rock': {'Fire': 2, 'Ice': 2, 'Fighting': 0.5, 'Ground': 0.5, 'Flying': 2, 'Bug': 2, 'Steel': 0.5},
-        'Ghost': {'Normal': 0, 'Psychic': 2, 'Ghost': 2, 'Dark': 0.5},
-        'Dragon': {'Dragon': 2, 'Steel': 0.5, 'Fairy': 0},
-        'Dark': {'Fighting': 0.5, 'Psychic': 2, 'Ghost': 2, 'Dark': 0.5, 'Fairy': 0.5},
-        'Steel': {'Fire': 0.5, 'Water': 0.5, 'Electric': 0.5, 'Ice': 2, 'Rock': 2, 'Steel': 0.5, 'Fairy': 2},
-        'Fairy': {'Fighting': 2, 'Poison': 0.5, 'Steel': 0.5, 'Fire': 0.5, 'Dragon': 2, 'Dark': 2},
-        'Null' : {}
-    }
-    #Checks Second Type
-    if deftype1 in type_effectiveness and moveType in type_effectiveness[deftype1]:
-        TYPE1 = type_effectiveness[deftype1][moveType]
-    #Checks first Type
-    if deftype2 in type_effectiveness and moveType in type_effectiveness[deftype2]:
-        TYPE2 = type_effectiveness[deftype2][moveType]
+def damagecalc(pkmLevel,movePower,pkmAttack,pkmDefense,pkmspeAttack,pkmspeDefense,attackType,pkmType1,pkmType2,moveType,deftype1,deftype2,moveAccuracy):
+    
+    hits = (random.randint(0, 100))
+    if hits <= moveAccuracy:
+        type_effectiveness = {
+            'Normal': {'Fighting': 2, 'Ghost': 0},
+            'Fire': {'Fire': 0.5, 'Water': 0.5, 'Grass': 2, 'Ice': 2, 'Bug': 2, 'Rock': 0.5, 'Dragon': 0.5, 'Steel': 2},
+            'Water': {'Fire': 2, 'Water': 0.5, 'Grass': 0.5, 'Ground': 2, 'Rock': 2, 'Dragon': 0.5},
+            'Electric': {'Water': 2, 'Electric': 0.5, 'Grass': 0.5, 'Ground': 0, 'Flying': 2, 'Dragon': 0.5},
+            'Grass': {'Fire': 0.5, 'Water': 2, 'Grass': 0.5, 'Poison': 0.5, 'Ground': 2, 'Flying': 0.5, 'Bug': 0.5, 'Rock': 2, 'Dragon': 0.5, 'Steel': 0.5},
+            'Ice': {'Fire': 0.5, 'Water': 0.5, 'Grass': 2, 'Ice': 0.5, 'Ground': 2, 'Flying': 2, 'Dragon': 2, 'Steel': 0.5},
+            'Fighting': {'Normal': 2, 'Ice': 2, 'Poison': 0.5, 'Flying': 0.5, 'Psychic': 0.5, 'Bug': 0.5, 'Rock': 2, 'Ghost': 0, 'Dark': 2, 'Steel': 2, 'Fairy': 0.5},
+            'Poison': {'Grass': 2, 'Poison': 0.5, 'Ground': 0.5, 'Rock': 0.5, 'Ghost': 0.5, 'Steel': 0, 'Fairy': 2},
+            'Ground': {'Fire': 2, 'Electric': 2, 'Grass': 0.5, 'Poison': 2, 'Flying': 0, 'Bug': 0.5, 'Rock': 2, 'Steel': 2},
+            'Flying': {'Electric': 0.5, 'Grass': 2, 'Fighting': 2, 'Bug': 2, 'Rock': 0.5, 'Steel': 0.5},
+            'Psychic': {'Fighting': 2, 'Poison': 2, 'Psychic': 0.5, 'Dark': 0, 'Steel': 0.5},
+            'Bug': {'Fire': 0.5, 'Grass': 2, 'Fighting': 0.5, 'Poison': 0.5, 'Flying': 0.5, 'Psychic': 2, 'Ghost': 0.5, 'Dark': 2, 'Steel': 0.5, 'Fairy': 0.5},
+            'Rock': {'Fire': 2, 'Ice': 2, 'Fighting': 0.5, 'Ground': 0.5, 'Flying': 2, 'Bug': 2, 'Steel': 0.5},
+            'Ghost': {'Normal': 0, 'Psychic': 2, 'Ghost': 2, 'Dark': 0.5},
+            'Dragon': {'Dragon': 2, 'Steel': 0.5, 'Fairy': 0},
+            'Dark': {'Fighting': 0.5, 'Psychic': 2, 'Ghost': 2, 'Dark': 0.5, 'Fairy': 0.5},
+            'Steel': {'Fire': 0.5, 'Water': 0.5, 'Electric': 0.5, 'Ice': 2, 'Rock': 2, 'Steel': 0.5, 'Fairy': 2},
+            'Fairy': {'Fighting': 2, 'Poison': 0.5, 'Steel': 0.5, 'Fire': 0.5, 'Dragon': 2, 'Dark': 2},
+            'Null' : {}
+        }
+        #Checks Second Type
+        if deftype1 in type_effectiveness and moveType in type_effectiveness[deftype1]:
+            TYPE1 = type_effectiveness[deftype1][moveType]
+        else:
+            TYPE1 = 1
+        #Checks first Type
+        if deftype2 in type_effectiveness and moveType in type_effectiveness[deftype2]:
+            TYPE2 = type_effectiveness[deftype2][moveType]
+        else:
+            TYPE2 = 1
+        #checks stab
+        if pkmType1 == moveType or (pkmType2 == moveType and pkmType2 != "Null"):
+            STAB = 1.5
+        else:
+            STAB = 1
+        #random num from (.85 to 1)
+        randdam = 1-((random.randint(0, 15))/100)
+        
+        #checks crits
+        critint = (random.randint(0, 15))
+        if critint == 0:
+            critical = 2
+        else:
+            critical = 1
 
-    if pkmType == moveType:
-        STAB = 1.5
+        if attackType == "Physical":
+            damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmAttack/pkmDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
+        elif attackType == "Special":
+            damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmspeAttack/pkmspeDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
+        return damageDone
     else:
-        STAB = 1
-    randdam = 1-((random.randint(0, 15))/100)
-    critint = (random.randint(0, 15))
-    if critint == 0:
-        critical = 2
-    else:
-        critical = 1
+        return 0
 
-    if attackType == "Physical":
-        damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmAttack/pkmDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
-    elif attackType == "Special":
-        damageDone = ((((((pkmLevel*2)/5)+2)*movePower*(pkmspeAttack/pkmspeDefense))/50)+2)*STAB*TYPE1*TYPE2*randdam*critical
-    return damageDone
+print(damagecalc(50, 40, 130, 60, 55, 75,"Physical", "Bug", "Steel", "Steel", "Ghost", "Poison",100))
+print(damagecalc(50, 120, 130, 60, 55, 75, "Special", "Fire", "Null", "Fire", "Grass", "Null",70))
+print(damagecalc(50, 80, 100, 100, 55, 75, "Physical", "Normal", "Null", "Normal", "Normal", "Null",50))
+print(damagecalc(50, 100, 130, 60, 55, 75, "Special", "Electric", "Null", "Electric", "Ground", "Null",20))
+print(damagecalc(50, 90, 120, 60, 100, 90, "Special", "Psychic", "Null", "Psychic", "Fighting", "Null",100))
+print(damagecalc(50, 75, 110, 70, 55, 75, "Physical", "Water", "Ice", "Water", "Rock", "Fire",60))
+print(damagecalc(50, 10, 50, 200, 55, 75, "Physical", "Bug", "Null", "Bug", "Steel", "Null",90))
