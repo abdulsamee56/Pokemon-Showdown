@@ -178,7 +178,7 @@ scizor_moves = [bullet_punch, body_slam, superpower, X_Scissor]
 scizor = Pokemon("Scizor", "Bug", "Steel", 70, 130, 100, 55, 80, 65, 50, scizor_moves)
 
 # Function to calculate damage dealt from one Pokémon to another using a specific move
-def damagecalc(attackingPokemon,defendingPokemon,Move):
+def damagecalc(attackingPokemon,aiPokemon,Move):
 
     # Calculate various factors influencing damage
     # Includes Pokémon's level, move's power, attacker's attack vs. defender's defense, etc.
@@ -187,15 +187,15 @@ def damagecalc(attackingPokemon,defendingPokemon,Move):
     pkmLevel = attackingPokemon.level
     movePower = Move.power
     pkmAttack = attackingPokemon.attack
-    pkmDefense = defendingPokemon.defense
+    pkmDefense = aiPokemon.defense
     pkmspeAttack = attackingPokemon.specialAttack
-    pkmspeDefense = defendingPokemon.specialDefense
+    pkmspeDefense = aiPokemon.specialDefense
     attackType = Move.attacktype
     attackingType1 = attackingPokemon.type1
     attackingType2 = attackingPokemon.type2
     moveType = Move.move_type
-    defendingType1 = defendingPokemon.type1
-    defendingType2 = defendingPokemon.type2
+    defendingType1 = aiPokemon.type1
+    defendingType2 = aiPokemon.type2
     moveAccuracy = Move.accuracy
 
     hits = (random.randint(0, 100))
@@ -257,11 +257,39 @@ def damagecalc(attackingPokemon,defendingPokemon,Move):
         return 0
     
 # Example damage calculations
-print(damagecalc(scizor,gengar,bullet_punch))
-print(damagecalc(drapion,snorlax,poison_jab))
-print(damagecalc(swampert, gengar, hydro_pump))
-print(damagecalc(magnezone, snorlax, thunderbolt))
-print(damagecalc(scizor, drapion, bullet_punch))
-print(damagecalc(gengar, magnezone, thunderbolt))
-print(damagecalc(drapion, swampert, poison_jab))
-print(damagecalc(snorlax, scizor, body_slam))
+#print(damagecalc(scizor,gengar,bullet_punch))
+#print(damagecalc(drapion,snorlax,poison_jab))
+#print(damagecalc(swampert, gengar, hydro_pump))
+#print(damagecalc(magnezone, snorlax, thunderbolt))
+#print(damagecalc(scizor, drapion, bullet_punch))
+#print(damagecalc(gengar, magnezone, thunderbolt))
+#print(damagecalc(drapion, swampert, poison_jab))
+#print(damagecalc(snorlax, scizor, body_slam))
+
+def aiLogic(aiPokemon, attackingPokemon):
+    # Calculate estimated damage for each move
+    Move1 = aiPokemon.moveset[0]
+    Move2 = aiPokemon.moveset[1]
+    Move3 = aiPokemon.moveset[2]
+    Move4 = aiPokemon.moveset[3]
+    estMove1 = damagecalc(aiPokemon, attackingPokemon, Move1)
+    estMove2 = damagecalc(aiPokemon, attackingPokemon, Move2)
+    estMove3 = damagecalc(aiPokemon, attackingPokemon, Move3)
+    estMove4 = damagecalc(aiPokemon, attackingPokemon, Move4)
+
+    # Store the results in a dictionary to easily identify which move has the largest estimate
+    moves = {
+        'Move1': estMove1,
+        'Move2': estMove2,
+        'Move3': estMove3,
+        'Move4': estMove4
+    }
+
+    # Find the move with the largest estimated damage
+    maxMove = max(moves, key=moves.get)
+    maxDamage = moves[maxMove]
+
+    # Return the move with the largest estimate and its value
+    return maxMove, maxDamage
+
+#print(aiLogic(gengar, magnezone))
