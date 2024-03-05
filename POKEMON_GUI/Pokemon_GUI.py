@@ -78,7 +78,9 @@ def create_pokemon_selection_window():
     selection_window.geometry("800x400")
 
     # Set background image
-    background_image = Image.open("lab.png")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    background_image_path = os.path.join(current_dir, "lab.png")
+    background_image = Image.open(background_image_path)
     background_image = ImageTk.PhotoImage(background_image)
     background_label = tk.Label(selection_window, image=background_image)
     background_label.place(relwidth=1, relheight=1)
@@ -115,7 +117,9 @@ def create_pokemon_info_window(pokemon_name, pokemon_description, pokemon_stats)
     info_window.geometry("800x600")
 
     # Set background image
-    background_image = Image.open("pokedex.png")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    background_image_path = os.path.join(current_dir, "pokedex.png")
+    background_image = Image.open(background_image_path)
     background_image = ImageTk.PhotoImage(background_image)
     background_label = tk.Label(info_window, image=background_image)
     background_label.place(relwidth=1, relheight=1)
