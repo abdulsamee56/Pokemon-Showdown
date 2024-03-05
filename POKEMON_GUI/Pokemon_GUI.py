@@ -201,37 +201,5 @@ stats = [
     {"name": "Gengar", "HP": 60, "ATK": 65, "SPATK": 130, "DEF": 60, "SPDEF": 75, "TYPE": "Ghost/Poison"},
     {"name": "Scizor", "HP": 70, "ATK": 130, "SPATK": 55, "DEF": 100, "SPDEF": 80, "TYPE": "Bug/Steel"}
 ]
-
-# Call the function to create the Tkinter window for selecting Pokemon.
-#Create the first window
-window = tk.Tk()
-window.geometry('600x500')
-window.title('User Agreement')
-
-#Create the greeting and the first text with specific font
-greeting = tk.Label(window, text = 'User Agreement' , font = 'Garamond 20 bold').pack()
-greeting = tk.Label(window, text = 'The user may not sell or distribute data without the express consent of WildInsight.', font = 'arial 10').place(x=10,y=50)
-
-#Output the WildInsight Logo
-image = Image.open('WildInsight_Analytics.png')
-resize_image = image.resize((300,200))
-image = ImageTk.PhotoImage(image)
-#Resize and place image under the text
-resize_image = ImageTk.PhotoImage(resize_image)
-image_label = tk.Label(window, image=resize_image).place(x=110, y=250)
-
-#Print out User agreement
-greeting = tk.Label(window, text = 'WildInsight Analytics is not responsible for data breaches, zero-day attacks, and database worms.' , font = 'arial 10').place(x=10,y=70)
-greeting = tk.Label(window, text = 'WildInsight Analytics requires users to perfrom periodic vulnerability assesments against this system' , font = 'arial 10').place(x=10,y=90)
-greeting = tk.Label(window, text = 'Requirments will change over time as technology and the security landscape changes.' , font = 'arial 10').place(x=10,y=110)
-greeting = tk.Label(window, text = "Do you agree with the terms and conditions? ", font = "arial 10").place(x = 10, y = 140 )
-
-def agree():
-    window.destroy()
-    create_pokemon_selection_window()
-
-def disagree():
-    window.destroy()
-#Buttons to take user input if they want to agree or disagree
-button = tk.Button(window,text = 'Agree',font = 'arial 8',command = agree,bg = 'ghost white').place(x=60,y=180)
-button = tk.Button(window,text = 'Disagree',font = 'arial 8',command = disagree,bg = 'ghost white').place(x=200,y=180)
+#Start the pokemon selection window
+create_pokemon_selection_window()
