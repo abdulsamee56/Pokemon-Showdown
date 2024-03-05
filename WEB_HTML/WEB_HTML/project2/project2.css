@@ -167,7 +167,7 @@ footer {
 /* rain */
 @keyframes fallAnimation {
     to {
-        transform: translate(0, 100vh);
+        transform: translate(0, 170vh);
     }
 }
 
