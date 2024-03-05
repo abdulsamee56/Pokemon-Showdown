@@ -164,7 +164,7 @@ footer {
     color: #682626; /* Dark font color for card headings */
 }
 
-
+/* rain */
 @keyframes fallAnimation {
     to {
         transform: translate(0, 100vh);
