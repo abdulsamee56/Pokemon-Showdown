@@ -163,3 +163,17 @@ footer {
 .battle-card h3 {
     color: #682626; /* Dark font color for card headings */
 }
+
+
+@keyframes fallAnimation {
+    to {
+        transform: translate(0, 100vh);
+    }
+}
+
+.raindrop {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    animation: rainAnimation 5s linear infinite;
+}
