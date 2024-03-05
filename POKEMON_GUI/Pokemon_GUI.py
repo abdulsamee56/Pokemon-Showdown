@@ -108,8 +108,6 @@ def create_pokemon_selection_window():
 
     selection_window.mainloop()
 
-import tkinter as tk
-from PIL import Image, ImageTk
 
 def create_pokemon_info_window(pokemon_name, pokemon_description, pokemon_stats):
     info_window = tk.Toplevel()
